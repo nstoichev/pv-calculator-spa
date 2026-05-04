@@ -58,8 +58,8 @@ export const bg: Messages = {
   phase_single_hybrid: 'Еднофазен хибрид',
   phase_three_hybrid: 'Трифазен хибрид',
 
-  battery_low_voltage: 'Ниско напрежение',
-  battery_high_voltage: 'Високо напрежение',
+  battery_low_voltage: 'Ниско волтова',
+  battery_high_voltage: 'Високо волтова',
 
   advanced_peak_sun: 'Пикови слънчеви часове',
   advanced_peak_sun_hint:

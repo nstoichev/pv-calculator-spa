@@ -21,6 +21,7 @@ import ConsumptionSection from './sections/ConsumptionSection';
 import InstallationSection from './sections/InstallationSection';
 import EquipmentSection from './sections/EquipmentSection';
 import AdvancedSection from './sections/AdvancedSection';
+import RecommendedSystemHero from './sections/RecommendedSystemHero';
 import ResultsPanel from './sections/ResultsPanel';
 
 export default function App() {
@@ -107,6 +108,10 @@ export default function App() {
       </header>
 
       <div className="app-layout">
+        <div className="recommended-hero-mobile-slot">
+          <RecommendedSystemHero systemSizeKwp={results.systemSizeKwp} />
+        </div>
+
         <div className="inputs-column">
           <ConsumptionSection
             mode={consumptionMode}

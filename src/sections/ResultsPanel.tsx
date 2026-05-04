@@ -77,7 +77,7 @@ export default function ResultsPanel({ results }: ResultsPanelProps) {
       </header>
 
       <div className="results-stats">
-        <div className="result-stat result-stat--hero">
+        <div className="result-stat result-stat--hero result-stat--hero-desktop-only">
           <span className="result-stat-label">{t(heroStat.labelKey)}</span>
           <span className="result-stat-value">{heroStat.value}</span>
           {heroStat.subKey ? (
