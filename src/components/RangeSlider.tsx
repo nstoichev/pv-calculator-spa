@@ -8,6 +8,8 @@ interface RangeSliderProps {
   max: number;
   step?: number;
   formatValue?: (value: number) => string;
+  /** When set, replaces the default "min – max" bounds row. */
+  boundsFormat?: (min: number, max: number) => string;
   ariaLabel?: string;
   id?: string;
 }
@@ -19,6 +21,7 @@ export default function RangeSlider({
   max,
   step = 1,
   formatValue,
+  boundsFormat,
   ariaLabel,
   id,
 }: RangeSliderProps) {
@@ -32,7 +35,9 @@ export default function RangeSlider({
       <div className="range-slider-header">
         <span className="range-slider-value">{display}</span>
         <span className="range-slider-bounds" aria-hidden="true">
-          {formatValue ? formatValue(min) : min} – {formatValue ? formatValue(max) : max}
+          {boundsFormat
+            ? boundsFormat(min, max)
+            : `${formatValue ? formatValue(min) : min} – ${formatValue ? formatValue(max) : max}`}
         </span>
       </div>
       <input

@@ -1,6 +1,7 @@
 import Field from '../components/Field';
 import NumberField from '../components/NumberField';
 import SegmentedToggle from '../components/SegmentedToggle';
+import { useI18n } from '../i18n/I18nContext';
 import type { ConsumptionMode } from '../calculator/types';
 
 interface ConsumptionSectionProps {
@@ -24,30 +25,31 @@ export default function ConsumptionSection({
   onKwhValueChange,
   onPricePerKwhChange,
 }: ConsumptionSectionProps) {
-  // Derived "other side" of whichever input the user is currently editing.
+  const { t } = useI18n();
+
   const derivedKwh = pricePerKwh > 0 ? billValue / pricePerKwh : 0;
   const derivedBill = kwhValue * pricePerKwh;
 
   return (
     <section className="card">
       <header className="card-header">
-        <h2>Consumption</h2>
+        <h2>{t('section_consumption')}</h2>
         <SegmentedToggle
           value={mode}
           onChange={onModeChange}
           options={[
-            { value: 'bill', label: 'Monthly bill' },
-            { value: 'kwh', label: 'kWh' },
+            { value: 'bill', label: t('consumption_mode_bill') },
+            { value: 'kwh', label: t('consumption_mode_kwh') },
           ]}
-          ariaLabel="Consumption input mode"
+          ariaLabel={t('consumption_mode_aria')}
         />
       </header>
 
       <div className="card-body">
         {mode === 'bill' ? (
           <Field
-            label="Monthly bill"
-            hint={`≈ ${formatKwh(derivedKwh)} kWh / month`}
+            label={t('consumption_bill_label')}
+            hint={t('consumption_bill_hint', { kwh: formatKwh(derivedKwh) })}
           >
             <NumberField
               value={round2(billValue)}
@@ -55,13 +57,13 @@ export default function ConsumptionSection({
               min={0}
               step={1}
               prefix="€"
-              ariaLabel="Monthly bill in euros"
+              ariaLabel={t('aria_monthly_bill')}
             />
           </Field>
         ) : (
           <Field
-            label="Monthly consumption"
-            hint={`≈ €${formatMoney(derivedBill)} / month`}
+            label={t('consumption_kwh_label')}
+            hint={t('consumption_kwh_hint', { bill: formatMoney(derivedBill) })}
           >
             <NumberField
               value={round1(kwhValue)}
@@ -69,12 +71,15 @@ export default function ConsumptionSection({
               min={0}
               step={1}
               suffix="kWh"
-              ariaLabel="Monthly consumption in kWh"
+              ariaLabel={t('aria_monthly_kwh')}
             />
           </Field>
         )}
 
-        <Field label="Price of electricity" hint="What you pay per kWh on your bill">
+        <Field
+          label={t('consumption_price_label')}
+          hint={t('consumption_price_hint')}
+        >
           <NumberField
             value={pricePerKwh}
             onChange={onPricePerKwhChange}
@@ -82,7 +87,7 @@ export default function ConsumptionSection({
             step={0.01}
             prefix="€"
             suffix="/ kWh"
-            ariaLabel="Price per kWh in euros"
+            ariaLabel={t('aria_price_per_kwh')}
           />
         </Field>
       </div>

@@ -31,9 +31,13 @@ The app opens at [http://localhost:5173](http://localhost:5173).
 
 ```
 src/
-├── main.tsx                       # Bootstraps the React app
+├── main.tsx                       # Bootstraps the React app + i18n provider
 ├── App.tsx                        # Top-level state + layout
 ├── index.css                      # All app styles
+├── i18n/                          # English / Bulgarian UI strings
+│   ├── I18nContext.tsx            # Locale state, localStorage, document.lang
+│   ├── messages/                # Translation tables + month labels
+│   └── optionLabels.ts          # Maps enum values → message keys
 ├── calculator/                    # Pure domain logic
 │   ├── types.ts
 │   ├── constants.ts               # Catalogues, derate factors, defaults
@@ -43,7 +47,8 @@ src/
 │   ├── NumberField.tsx
 │   ├── RadioCardGroup.tsx         # Button-styled radios
 │   ├── RangeSlider.tsx
-│   └── SegmentedToggle.tsx        # Bill ↔ kWh switch
+│   ├── SegmentedToggle.tsx        # Bill ↔ kWh switch
+│   └── LanguageSwitcher.tsx     # EN / BG select (header)
 └── sections/                      # Calculator-specific sections
     ├── ConsumptionSection.tsx
     ├── InstallationSection.tsx
@@ -52,6 +57,15 @@ src/
     ├── ResultsPanel.tsx
     └── MonthlyChart.tsx           # Recharts bar chart
 ```
+
+## Languages (EN / BG)
+
+The UI is available in **English** and **Bulgarian**. Use the language control in the header.
+
+- **Persistence**: the choice is saved under `localStorage` key `pv-calculator-locale` (`en` or `bg`).
+- **First visit**: if nothing is stored, the app picks **Bulgarian** when the browser language starts with `bg`, otherwise **English**.
+- **Runtime**: `document.documentElement.lang` and `document.title` follow the active locale.
+- **Strings**: edit [`src/i18n/messages/en.ts`](src/i18n/messages/en.ts) and [`src/i18n/messages/bg.ts`](src/i18n/messages/bg.ts). Units such as `kWh`, `kWp`, `W`, `m²`, and `€` stay the same in both locales where they are universal.
 
 ## How it calculates
 

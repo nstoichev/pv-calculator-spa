@@ -7,22 +7,24 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { MONTH_LABELS } from '../calculator/constants';
+import { useI18n } from '../i18n/I18nContext';
 
 interface MonthlyChartProps {
   monthlyProductionKwh: number[];
 }
 
 export default function MonthlyChart({ monthlyProductionKwh }: MonthlyChartProps) {
-  const data = MONTH_LABELS.map((month, i) => ({
+  const { t, monthLabels } = useI18n();
+
+  const data = monthLabels.map((month, i) => ({
     month,
     kwh: Math.round(monthlyProductionKwh[i] ?? 0),
   }));
 
   return (
     <div className="chart">
-      <h3 className="chart-title">Monthly energy production</h3>
-      <p className="chart-subtitle">Estimated kWh generated per month</p>
+      <h3 className="chart-title">{t('chart_title')}</h3>
+      <p className="chart-subtitle">{t('chart_subtitle')}</p>
       <div className="chart-canvas">
         <ResponsiveContainer width="100%" height={260}>
           <BarChart
@@ -55,7 +57,7 @@ export default function MonthlyChart({ monthlyProductionKwh }: MonthlyChartProps
               }}
               formatter={(value) => {
                 const num = typeof value === 'number' ? value : Number(value);
-                return [`${num.toLocaleString()} kWh`, 'Production'];
+                return [`${num.toLocaleString()} kWh`, t('chart_tooltip_series')];
               }}
               labelStyle={{ color: 'var(--text-muted)', marginBottom: 4 }}
             />

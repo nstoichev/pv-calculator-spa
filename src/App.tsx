@@ -15,6 +15,8 @@ import type {
   RoofType,
   SystemPhase,
 } from './calculator/types';
+import LanguageSwitcher from './components/LanguageSwitcher';
+import { useI18n } from './i18n/I18nContext';
 import ConsumptionSection from './sections/ConsumptionSection';
 import InstallationSection from './sections/InstallationSection';
 import EquipmentSection from './sections/EquipmentSection';
@@ -22,6 +24,7 @@ import AdvancedSection from './sections/AdvancedSection';
 import ResultsPanel from './sections/ResultsPanel';
 
 export default function App() {
+  const { t } = useI18n();
   const [pricePerKwh, setPricePerKwh] = useState<number>(DEFAULT_PRICE_PER_KWH);
   // Source of truth tracks whichever side the user is currently editing.
   // When they toggle modes we sync the "other" side from current values, so
@@ -67,22 +70,19 @@ export default function App() {
     PEAK_SUN_HOURS_RANGE.default,
   );
 
-  const inputs: CalculatorInputs = {
-    monthlyKwh,
-    pricePerKwh,
-    mounting,
-    roofType,
-    orientation,
-    systemPhase,
-    batteryType,
-    panelWattage,
-    peakSunHours,
-  };
-
   const results = useMemo(
-    () => calculate(inputs),
-    // We re-derive when any input changes; `inputs` is rebuilt every render.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    () =>
+      calculate({
+        monthlyKwh,
+        pricePerKwh,
+        mounting,
+        roofType,
+        orientation,
+        systemPhase,
+        batteryType,
+        panelWattage,
+        peakSunHours,
+      } satisfies CalculatorInputs),
     [
       monthlyKwh,
       pricePerKwh,
@@ -99,10 +99,11 @@ export default function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <div>
-          <h1>PV solar calculator</h1>
-          <p>Estimate the size, output and savings of your solar installation.</p>
+        <div className="app-header-main">
+          <h1>{t('app_title')}</h1>
+          <p>{t('app_subtitle')}</p>
         </div>
+        <LanguageSwitcher />
       </header>
 
       <div className="app-layout">
@@ -146,11 +147,7 @@ export default function App() {
       </div>
 
       <footer className="app-footer">
-        <p>
-          Estimates use a performance ratio of 0.80 with orientation and
-          mounting derate factors. Actual production depends on local climate,
-          shading, and equipment.
-        </p>
+        <p>{t('footer_disclaimer')}</p>
       </footer>
     </div>
   );

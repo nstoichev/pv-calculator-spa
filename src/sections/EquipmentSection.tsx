@@ -1,11 +1,17 @@
+import { useMemo } from 'react';
 import Field from '../components/Field';
 import RadioCardGroup from '../components/RadioCardGroup';
 import {
-  BATTERY_OPTIONS,
+  BATTERY_VALUES,
   PANELS,
-  SYSTEM_PHASE_OPTIONS,
+  SYSTEM_PHASE_VALUES,
   isHybrid,
 } from '../calculator/constants';
+import {
+  BATTERY_LABEL_KEYS,
+  SYSTEM_PHASE_LABEL_KEYS,
+} from '../i18n/optionLabels';
+import { useI18n } from '../i18n/I18nContext';
 import type {
   BatteryType,
   PanelWattage,
@@ -29,41 +35,64 @@ export default function EquipmentSection({
   onBatteryTypeChange,
   onPanelWattageChange,
 }: EquipmentSectionProps) {
+  const { t } = useI18n();
   const showBattery = isHybrid(systemPhase);
 
-  const panelOptions = PANELS.map((p) => ({
-    value: String(p.wattage) as `${PanelWattage}`,
-    label: p.label,
-  }));
+  const phaseOptions = useMemo(
+    () =>
+      SYSTEM_PHASE_VALUES.map((value) => ({
+        value,
+        label: t(SYSTEM_PHASE_LABEL_KEYS[value]),
+      })),
+    [t],
+  );
+
+  const batteryOptions = useMemo(
+    () =>
+      BATTERY_VALUES.map((value) => ({
+        value,
+        label: t(BATTERY_LABEL_KEYS[value]),
+      })),
+    [t],
+  );
+
+  const panelOptions = useMemo(
+    () =>
+      PANELS.map((p) => ({
+        value: String(p.wattage) as `${PanelWattage}`,
+        label: `${p.wattage} W`,
+      })),
+    [],
+  );
 
   return (
     <section className="card">
       <header className="card-header">
-        <h2>System &amp; equipment</h2>
+        <h2>{t('section_equipment')}</h2>
       </header>
 
       <div className="card-body">
-        <Field label="Inverter / system type">
+        <Field label={t('equipment_inverter')}>
           <RadioCardGroup
             name="system-phase"
             value={systemPhase}
             onChange={onSystemPhaseChange}
-            options={SYSTEM_PHASE_OPTIONS}
+            options={phaseOptions}
           />
         </Field>
 
         {showBattery ? (
-          <Field label="Battery type">
+          <Field label={t('equipment_battery')}>
             <RadioCardGroup
               name="battery-type"
               value={batteryType}
               onChange={onBatteryTypeChange}
-              options={BATTERY_OPTIONS}
+              options={batteryOptions}
             />
           </Field>
         ) : null}
 
-        <Field label="Panel power">
+        <Field label={t('equipment_panel')}>
           <RadioCardGroup
             name="panel-wattage"
             value={String(panelWattage) as `${PanelWattage}`}

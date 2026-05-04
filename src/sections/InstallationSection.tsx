@@ -1,10 +1,17 @@
+import { useMemo } from 'react';
 import Field from '../components/Field';
 import RadioCardGroup from '../components/RadioCardGroup';
 import {
-  MOUNTING_OPTIONS,
-  ORIENTATION_OPTIONS,
-  ROOF_TYPE_OPTIONS,
+  MOUNTING_VALUES,
+  ORIENTATION_VALUES,
+  ROOF_TYPE_VALUES,
 } from '../calculator/constants';
+import {
+  MOUNTING_LABEL_KEYS,
+  ORIENTATION_LABEL_KEYS,
+  ROOF_LABEL_KEYS,
+} from '../i18n/optionLabels';
+import { useI18n } from '../i18n/I18nContext';
 import type { Mounting, Orientation, RoofType } from '../calculator/types';
 
 interface InstallationSectionProps {
@@ -24,39 +31,68 @@ export default function InstallationSection({
   onRoofTypeChange,
   onOrientationChange,
 }: InstallationSectionProps) {
+  const { t } = useI18n();
+
+  const mountingOptions = useMemo(
+    () =>
+      MOUNTING_VALUES.map((value) => ({
+        value,
+        label: t(MOUNTING_LABEL_KEYS[value]),
+      })),
+    [t],
+  );
+
+  const roofOptions = useMemo(
+    () =>
+      ROOF_TYPE_VALUES.map((value) => ({
+        value,
+        label: t(ROOF_LABEL_KEYS[value]),
+      })),
+    [t],
+  );
+
+  const orientationOptions = useMemo(
+    () =>
+      ORIENTATION_VALUES.map((value) => ({
+        value,
+        label: t(ORIENTATION_LABEL_KEYS[value]),
+      })),
+    [t],
+  );
+
   return (
     <section className="card">
       <header className="card-header">
-        <h2>Installation</h2>
+        <h2>{t('section_installation')}</h2>
       </header>
 
       <div className="card-body">
-        <Field label="Mounting type">
+        <Field label={t('installation_mounting')}>
           <RadioCardGroup
             name="mounting"
             value={mounting}
             onChange={onMountingChange}
-            options={MOUNTING_OPTIONS}
+            options={mountingOptions}
           />
         </Field>
 
         {mounting === 'roof' ? (
-          <Field label="Roof type">
+          <Field label={t('installation_roof_type')}>
             <RadioCardGroup
               name="roof-type"
               value={roofType}
               onChange={onRoofTypeChange}
-              options={ROOF_TYPE_OPTIONS}
+              options={roofOptions}
             />
           </Field>
         ) : null}
 
-        <Field label="Orientation">
+        <Field label={t('installation_orientation')}>
           <RadioCardGroup
             name="orientation"
             value={orientation}
             onChange={onOrientationChange}
-            options={ORIENTATION_OPTIONS}
+            options={orientationOptions}
           />
         </Field>
       </div>

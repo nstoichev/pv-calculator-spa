@@ -33,14 +33,13 @@ export const SPACING_FACTOR_FLAT = 1.4;
 export interface PanelSpec {
   wattage: PanelWattage;
   areaM2: number;
-  label: string;
 }
 
 export const PANELS: readonly PanelSpec[] = [
-  { wattage: 400, areaM2: 1.95, label: '400 W' },
-  { wattage: 460, areaM2: 2.2, label: '460 W' },
-  { wattage: 550, areaM2: 2.58, label: '550 W' },
-  { wattage: 700, areaM2: 3.12, label: '700 W' },
+  { wattage: 400, areaM2: 1.95 },
+  { wattage: 460, areaM2: 2.2 },
+  { wattage: 550, areaM2: 2.58 },
+  { wattage: 700, areaM2: 3.12 },
 ] as const;
 
 // Northern Hemisphere monthly distribution of annual PV production.
@@ -48,21 +47,6 @@ export const PANELS: readonly PanelSpec[] = [
 const MONTHLY_DISTRIBUTION_SOUTH = [
   3.5, 4.5, 7.5, 10, 12, 13, 13.5, 12.5, 9.5, 7, 4, 3,
 ];
-
-export const MONTH_LABELS = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
-] as const;
 
 export function monthlyDistribution(orientation: Orientation): number[] {
   const base = MONTHLY_DISTRIBUTION_SOUTH.map((p) => p / 100);
@@ -91,35 +75,32 @@ export function isPitchedRoof(mounting: Mounting, roofType: RoofType): boolean {
   return roofType === 'tiles' || roofType === 'sandwich' || roofType === 'bitumen';
 }
 
-export const ROOF_TYPE_OPTIONS: { value: RoofType; label: string }[] = [
-  { value: 'tiles', label: 'Tiles' },
-  { value: 'sandwich', label: 'Sandwich panel' },
-  { value: 'flat', label: 'Flat' },
-  { value: 'bitumen', label: 'Bitumen' },
-];
+export const ROOF_TYPE_VALUES: readonly RoofType[] = [
+  'tiles',
+  'sandwich',
+  'flat',
+  'bitumen',
+] as const;
 
-export const MOUNTING_OPTIONS: { value: Mounting; label: string }[] = [
-  { value: 'ground', label: 'Ground' },
-  { value: 'roof', label: 'Roof' },
-];
+export const MOUNTING_VALUES: readonly Mounting[] = ['ground', 'roof'] as const;
 
-export const ORIENTATION_OPTIONS: { value: Orientation; label: string }[] = [
-  { value: 'south', label: 'South' },
-  { value: 'south_east_west', label: 'SE / SW' },
-  { value: 'east_west', label: 'E / W' },
-];
+export const ORIENTATION_VALUES: readonly Orientation[] = [
+  'south',
+  'south_east_west',
+  'east_west',
+] as const;
 
-export const SYSTEM_PHASE_OPTIONS: { value: SystemPhase; label: string }[] = [
-  { value: 'single_phase', label: 'Single-phase' },
-  { value: 'three_phase', label: 'Three-phase' },
-  { value: 'single_phase_hybrid', label: 'Single-phase hybrid' },
-  { value: 'three_phase_hybrid', label: 'Three-phase hybrid' },
-];
+export const SYSTEM_PHASE_VALUES: readonly SystemPhase[] = [
+  'single_phase',
+  'three_phase',
+  'single_phase_hybrid',
+  'three_phase_hybrid',
+] as const;
 
-export const BATTERY_OPTIONS: { value: BatteryType; label: string }[] = [
-  { value: 'low_voltage', label: 'Low-voltage' },
-  { value: 'high_voltage', label: 'High-voltage' },
-];
+export const BATTERY_VALUES: readonly BatteryType[] = [
+  'low_voltage',
+  'high_voltage',
+] as const;
 
 export const PEAK_SUN_HOURS_RANGE = {
   min: 2.0,
