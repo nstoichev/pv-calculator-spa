@@ -70,7 +70,7 @@ export default function ResultsPanel({ results }: ResultsPanelProps) {
   const [heroStat, ...otherStats] = stats;
 
   return (
-    <aside className="results">
+    <aside className="results" id="results-panel">
       <header className="results-header">
         <h2>{t('section_results')}</h2>
         <p>{t('section_results_hint')}</p>

@@ -17,6 +17,7 @@ export const bg: Messages = {
   section_advanced: 'Разширени',
   section_results: 'Оценка на резултатите',
   section_results_hint: 'Актуализира се при промяна на входовете.',
+  mobile_see_results: 'Виж резултатите',
 
   consumption_mode_bill: 'Месечна сметка',
   consumption_mode_kwh: 'kWh',

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import {
   DEFAULT_MONTHLY_BILL,
   DEFAULT_PRICE_PER_KWH,
@@ -71,6 +71,31 @@ export default function App() {
     PEAK_SUN_HOURS_RANGE.default,
   );
 
+  const recommendedHeroMobileSlotRef = useRef<HTMLDivElement>(null);
+
+  const scrollToResults = useCallback(() => {
+    const panel = document.getElementById('results-panel');
+    const slot = recommendedHeroMobileSlotRef.current;
+    if (!panel) return;
+
+    let coverPx = 0;
+    if (slot && getComputedStyle(slot).display !== 'none') {
+      const topInset = parseFloat(getComputedStyle(slot).top);
+      coverPx =
+        (Number.isFinite(topInset) ? topInset : 0) + slot.offsetHeight;
+    }
+
+    const gapPx = 10;
+    const panelTop =
+      panel.getBoundingClientRect().top + window.scrollY;
+    const nextScrollY = panelTop - coverPx - gapPx;
+
+    window.scrollTo({
+      top: Math.max(0, nextScrollY),
+      behavior: 'smooth',
+    });
+  }, []);
+
   const results = useMemo(
     () =>
       calculate({
@@ -108,8 +133,18 @@ export default function App() {
       </header>
 
       <div className="app-layout">
-        <div className="recommended-hero-mobile-slot">
+        <div
+          className="recommended-hero-mobile-slot"
+          ref={recommendedHeroMobileSlotRef}
+        >
           <RecommendedSystemHero systemSizeKwp={results.systemSizeKwp} />
+          <button
+            type="button"
+            className="recommended-hero-see-results"
+            onClick={scrollToResults}
+          >
+            {t('mobile_see_results')}
+          </button>
         </div>
 
         <div className="inputs-column">

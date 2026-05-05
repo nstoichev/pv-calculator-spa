@@ -15,6 +15,7 @@ export const en = {
   section_advanced: 'Advanced',
   section_results: 'Estimated results',
   section_results_hint: 'Updates as you change inputs.',
+  mobile_see_results: 'See results',
 
   consumption_mode_bill: 'Monthly bill',
   consumption_mode_kwh: 'kWh',
